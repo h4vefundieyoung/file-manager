@@ -39,7 +39,7 @@ class FS extends Module {
 
       try {
         const rStream = createReadStream(resolve(path))
-        .on("end", res)
+        .on("end", () => res)
         .on("error", rej);
         rStream.pipe(stdout);
       } catch (e) {
