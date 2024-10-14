@@ -6,7 +6,7 @@ import { EOL } from "os";
 import { pipeline } from "stream";
 
 import { Module } from "../abstractions/module.js";
-import { ArgsError } from "../errors/ArgsError.js";
+import { ArgsError, OperationError } from "../errors/index.js";
 
 class FS extends Module {
   ls () {
@@ -28,7 +28,7 @@ class FS extends Module {
         console.table(formatted);
         res();
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }
@@ -40,10 +40,10 @@ class FS extends Module {
       try {
         const rStream = createReadStream(resolve(path))
         .on("end", () => res)
-        .on("error", rej);
+        .on("error", () => rej(new OperationError));
         rStream.pipe(stdout);
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }
@@ -56,17 +56,17 @@ class FS extends Module {
         const path = join(cwd(), filename);
         try {
           await access(path);
-          rej(new ArgsError("The file is already exists"));
+          rej(new OperationError());
         } catch (e) {
           if (e.code === "ENOENT") {
             await writeFile(path, "");
             stdout.write(`The file was successfully created${EOL}`);
             return res()
           }
-          rej(e);
+          rej(new OperationError());
         }
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }
@@ -74,7 +74,7 @@ class FS extends Module {
   rn ([sourcePath, destPath]) {
     return new Promise(async (res, rej) => {
       if (!sourcePath || !destPath) {
-        rej(ArgsError());
+        rej(new ArgsError());
       }
       
       try {
@@ -82,7 +82,7 @@ class FS extends Module {
         stdout.write(`Successfully renamed${EOL}`);
         res();
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }
@@ -90,19 +90,20 @@ class FS extends Module {
   cp ([sourcePath, destPath], thisCall) {
     return new Promise(async (res, rej) => {
       if (!sourcePath || !destPath) {
-        rej(ArgsError());
+        rej(new ArgsError());
       }
 
       try {
         const rStream = createReadStream(resolve(sourcePath));
         const wStream = createWriteStream(resolve(destPath));
+        
         pipeline(rStream, wStream, (e) => {
-          if (e) rej(e);
+          if (e) rej(new OperationError());
           if (!thisCall) stdout.write(`Successfully copied${EOL}`);
           res();
         });
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }
@@ -116,7 +117,7 @@ class FS extends Module {
         if (!thisCall) stdout.write(`Successfully removed${EOL}`);
         res();
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }
@@ -124,7 +125,7 @@ class FS extends Module {
   mv ([sourcePath, destPath]) {
     return new Promise(async (res, rej) => {
       if (!sourcePath || !destPath) {
-        rej(ArgsError());
+        rej(new ArgsError());
       }
 
       try {
@@ -134,7 +135,7 @@ class FS extends Module {
         stdout.write(`Successfully moved${EOL}`);
         res();
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }

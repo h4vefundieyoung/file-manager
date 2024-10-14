@@ -6,7 +6,7 @@ import { stdout } from "process";
 import { EOL } from "os";
 
 import { Module } from "../abstractions/module.js";
-import { ArgsError } from "../errors/ArgsError.js";
+import { ArgsError, OperationError } from "../errors/index.js";
 
 class Compressor extends Module {
   brCompressor = createBrotliCompress();
@@ -22,12 +22,12 @@ class Compressor extends Module {
         const tStream = decompress ? this.brDecompressor : this.brCompressor;
 
         pipeline(rStream, tStream, wStream, (e) => {
-          if (e) rej(e);
+          if (e) rej(new OperationError());
           stdout.write(`Given files was successfully ${decompress ? "decompressed" : "compressed"}` + EOL);
           res();
         });
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }

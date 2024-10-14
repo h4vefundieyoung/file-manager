@@ -7,6 +7,7 @@ import { EOL } from "os";
 
 import { Module } from "../abstractions/module.js";
 import { ArgsError } from "../errors/ArgsError.js";
+import { OperationError } from "../errors/OperationError.js";
 
 class Crypto extends Module {
   hash([path]) {
@@ -18,13 +19,13 @@ class Crypto extends Module {
         const rStream = createReadStream(resolve(path));
 
         pipeline(rStream, hash, (e) => {
-          if (e) rej(e);
+          if (e) rej(new OperationError());
 
           stdout.write(`Hash for the given file is: ${hash.digest("hex")}` + EOL);
           res();
         });
       } catch (e) {
-        rej(e);
+        rej(new OperationError());
       }
     })
   }
