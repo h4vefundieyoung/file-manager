@@ -19,7 +19,7 @@ class FS extends Module {
           type: entity.isDirectory() ? "directory" : entity.isFile() ? "file" : "huita"
         }))
         .sort((a, b) => {
-          if(a.type === b.type) {
+          if (a.type === b.type) {
             return a.name.localeCompare(b.name);
           }
           return a.type.localeCompare(b.type)
@@ -72,7 +72,7 @@ class FS extends Module {
   }
 
   rn ([sourcePath, destPath]) {
-    if(!sourcePath || !destPath) {
+    if (!sourcePath || !destPath) {
       rej(ArgsError());
     }
 
@@ -89,7 +89,7 @@ class FS extends Module {
 
   cp ([sourcePath, destPath], thisCall) {
     return new Promise(async (res, rej) => {
-      if(!sourcePath || !destPath) {
+      if (!sourcePath || !destPath) {
         rej(ArgsError());
       }
 
@@ -98,7 +98,7 @@ class FS extends Module {
         const wStream = createWriteStream(resolve(destPath));
         pipeline(rStream, wStream, (e) => {
           if (e) rej(e);
-          if(!thisCall) stdout.write(`Successfully copied${EOL}`);
+          if (!thisCall) stdout.write(`Successfully copied${EOL}`);
           res();
         });
       } catch (e) {
@@ -109,11 +109,11 @@ class FS extends Module {
 
   rm ([path], thisCall) {
     return new Promise(async (res, rej) => {
-      if(!path) rej(new ArgsError())
+      if (!path) rej(new ArgsError())
 
       try {
         await rm(resolve(path));
-        if(!thisCall) stdout.write(`Successfully removed${EOL}`);
+        if (!thisCall) stdout.write(`Successfully removed${EOL}`);
         res();
       } catch (e) {
         rej(e);
@@ -123,7 +123,7 @@ class FS extends Module {
 
   mv ([sourcePath, destPath]) {
     return new Promise(async (res, rej) => {
-      if(!sourcePath || !destPath) {
+      if (!sourcePath || !destPath) {
         rej(ArgsError());
       }
 

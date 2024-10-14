@@ -7,7 +7,7 @@ import { Module } from "../abstractions/module.js";
 
 class Navigator extends Module {
   up () {
-    if(cwd() === homedir()) {
+    if (cwd() === homedir()) {
       return
     }
 
@@ -22,7 +22,7 @@ class Navigator extends Module {
     const resolved = resolve(path).toLowerCase();
     const homePath = homedir().toLowerCase();
 
-    if(!resolved.startsWith(homePath)) {
+    if (!resolved.startsWith(homePath)) {
       return
     }
 

@@ -2,7 +2,7 @@ import { EOL, homedir } from "os";
 import { stdin, stdout, stderr, chdir }  from "process";
 
 import { director } from "./src/modules/director.js";
-import { os, fs, hash, navigator, compressor } from "./src/modules/index.js";
+import { os, fs, crypto, navigator, compressor } from "./src/modules/index.js";
 import { getCwdMsg } from "./src/helpers/index.js";
 
 
@@ -13,7 +13,7 @@ const USERNAME = usernameIndx && arg.slice(usernameIndx) || "Jesus of Nazareth";
 const inputHandler = (userInput) => {
   const [cmd, ...args] = userInput.toString().trim().split(" ");
 
-  if(cmd === ".exit") {
+  if (cmd === ".exit") {
     process.exit(1);
   }
   try {
