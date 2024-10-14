@@ -19,7 +19,7 @@ const inputHandler = (userInput) => {
   try {
     director.emit(cmd, args);
   } catch (e) {
-    stderr.write(e?.message || `unknown error${EOL}`);
+    e?.message && stderr.write(e.message.trim() + EOL);
   }
 }
 
