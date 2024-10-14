@@ -10,9 +10,9 @@ import { ArgsError } from "../errors/ArgsError.js";
 
 class Crypto extends Module {
   hash([path]) {
-    if (!path) throw new ArgsError();
-
     return new Promise((res, rej) => {
+      if (!path) rej(new ArgsError());
+
       try {
         const hash = createHash('sha256');
         const rStream = createReadStream(resolve(path));

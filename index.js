@@ -2,9 +2,8 @@ import { EOL, homedir } from "os";
 import { stdin, stdout, stderr, chdir }  from "process";
 
 import { director } from "./src/modules/director.js";
-import { os, fs, crypto, navigator, compressor } from "./src/modules/index.js";
 import { getCwdMsg } from "./src/helpers/index.js";
-
+import "./src/modules/index.js";
 
 const arg = process.argv[2];
 const usernameIndx = arg?.split("").findIndex((char) => char.charCodeAt(0) === 61) + 1;

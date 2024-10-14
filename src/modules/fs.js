@@ -72,11 +72,11 @@ class FS extends Module {
   }
 
   rn ([sourcePath, destPath]) {
-    if (!sourcePath || !destPath) {
-      rej(ArgsError());
-    }
-
     return new Promise(async (res, rej) => {
+      if (!sourcePath || !destPath) {
+        rej(ArgsError());
+      }
+      
       try {
         await rename(resolve(sourcePath), resolve(destPath));
         stdout.write(`Successfully renamed${EOL}`);
