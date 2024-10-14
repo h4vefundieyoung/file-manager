@@ -1,7 +1,7 @@
 import { stdout, cwd } from "process";
 import { readdir, writeFile, access, rename, rm } from "fs/promises";
 import { createReadStream, createWriteStream } from "fs"
-import { resolve, join } from "path";
+import { resolve, join, parse } from "path";
 import { EOL } from "os";
 import { pipeline } from "stream";
 
@@ -16,7 +16,7 @@ class FS extends Module {
         const formatted = folderData
         .map((entity) => ({
           name: entity.name,
-          type: entity.isDirectory() ? "directory" : entity.isFile() ? "file" : "huita"
+          type: entity.isDirectory() ? "directory" : entity.isFile() ? "file" : "allien"
         }))
         .sort((a, b) => {
           if (a.type === b.type) {
@@ -94,8 +94,10 @@ class FS extends Module {
       }
 
       try {
-        const rStream = createReadStream(resolve(sourcePath));
-        const wStream = createWriteStream(resolve(destPath));
+        const source = resolve(sourcePath);
+        const parsed = parse(source);
+        const rStream = createReadStream(source);
+        const wStream = createWriteStream(join(resolve(destPath), parsed.base));
         
         pipeline(rStream, wStream, (e) => {
           if (e) rej(new OperationError());
@@ -131,7 +133,7 @@ class FS extends Module {
       try {
         await this.cp([sourcePath, destPath], true);
         await this.rm([sourcePath], true);
-        console.log("zzz");
+        
         stdout.write(`Successfully moved${EOL}`);
         res();
       } catch (e) {

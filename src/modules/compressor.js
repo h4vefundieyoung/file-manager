@@ -1,7 +1,7 @@
 import { createBrotliCompress, createBrotliDecompress } from "zlib"
 import { createReadStream, createWriteStream } from "fs";
 import { pipeline } from "stream";
-import { resolve } from "path";
+import { resolve, parse, join } from "path";
 import { stdout } from "process";
 import { EOL } from "os";
 
@@ -17,8 +17,11 @@ class Compressor extends Module {
       if (!source || !dest) rej(new ArgsError());
 
       try {
-        const rStream = createReadStream(resolve(source));
-        const wStream = createWriteStream(resolve(dest));
+        const _source = resolve(source);
+        const _dest = resolve(dest);
+        const parsedSource = parse(_source);
+        const rStream = createReadStream(_source);
+        const wStream = createWriteStream(join(_dest, decompress ? parsedSource.name : parsedSource.base + ".br"))
         const tStream = decompress ? this.brDecompressor : this.brCompressor;
 
         pipeline(rStream, tStream, wStream, (e) => {

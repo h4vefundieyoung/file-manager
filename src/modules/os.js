@@ -25,7 +25,7 @@ class OS extends Module {
   }
 
   eol () {
-    stdout.write(`Current end of line is: \\${EOL}`);
+    stdout.write(`Current end of line is: ${JSON.stringify(EOL)}` + EOL);
   }
 }
 
