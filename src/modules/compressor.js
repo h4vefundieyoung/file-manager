@@ -2,4 +2,4 @@ class Compressor {
 
 }
 
-export const instance = new Compressor(); 
+export const compressor = new Compressor(); 
