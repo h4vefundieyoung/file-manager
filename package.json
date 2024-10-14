@@ -1,0 +1,23 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "amazing cli tool(not)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h4vefundieyoung/file-manager.git"
+  },
+  "keywords": [
+    "hard",
+    "porn"
+  ],
+  "author": "really great person",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/h4vefundieyoung/file-manager/issues"
+  },
+  "homepage": "https://github.com/h4vefundieyoung/file-manager#readme"
+}
