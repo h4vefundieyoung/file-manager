@@ -19,11 +19,13 @@ class OS extends Module {
   }
 
   cpus () {
-    stdout.write(JSON.stringify(cpus()) + EOL);
+    const data = cpus().map(({model, speed}) => JSON.stringify({ model, speed: speed / 1000 + "GHz" }));
+    stdout.write(`There are ${data.length} cpus with such stats:` + EOL);
+    data.forEach(core => stdout.write(core + EOL));
   }
 
   eol () {
-    stdout.write(`Current end of line is: \\${EOL}` + EOL);
+    stdout.write(`Current end of line is: \\${EOL}`);
   }
 }
 
